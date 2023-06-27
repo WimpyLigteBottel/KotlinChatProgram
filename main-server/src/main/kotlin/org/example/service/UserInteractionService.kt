@@ -24,7 +24,7 @@ class UserInteractionService(
         }
 
 
-        room.messages.add(Message(user, "Has joined the room"))
+        room.messages.add(Message(user, "Has joined the room ${user.name}"))
     }
 
     fun sendMessage(messageRequest: MessageRequest) {
