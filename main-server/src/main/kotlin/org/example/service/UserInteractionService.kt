@@ -33,6 +33,8 @@ class UserInteractionService(
         val room = roomRepo.find(messageRequest.roomId) ?: throw RuntimeException("room not found")
         val user = userRepo.find(messageRequest.userId) ?: throw RuntimeException("user not found")
 
+        room.users.find { it.id == user.id } ?: throw RuntimeException("User is not in the room!")
+
 
         room.messages.add(Message(user, messageRequest.message))
 
