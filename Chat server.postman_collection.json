@@ -1,0 +1,268 @@
+{
+	"info": {
+		"_postman_id": "268993cf-865e-4489-803f-4d589624df83",
+		"name": "Chat server",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5888771"
+	},
+	"item": [
+		{
+			"name": "rooms",
+			"item": [
+				{
+					"name": "v1/rooms",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/rooms",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"rooms"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find room",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/rooms/c1f8702e-b417-4c6d-84be-1fa89b5fa852",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"rooms",
+								"c1f8702e-b417-4c6d-84be-1fa89b5fa852"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "users",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/users",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create user",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"asdasd\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v1/users",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find user",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/users/a7474168-517f-47f8-8377-76618f51a77a",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"users",
+								"a7474168-517f-47f8-8377-76618f51a77a"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "user interactions",
+			"item": [
+				{
+					"name": "Create room",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"roomName\":\"The awesome room name!\",\r\n    \"userId\": \"97a923a5-4eee-403c-8e4e-9873f95a0d01\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v1/createRoom",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"createRoom"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete room",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"roomId\":\"93c25d97-1cd1-4a72-a44a-d46dae473ab9\",\r\n    \"userId\": \"97a923a5-4eee-403c-8e4e-9873f95a0d01\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v1/deleteRoom",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"deleteRoom"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "join room request",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"roomId\":\"c1f8702e-b417-4c6d-84be-1fa89b5fa852\",\r\n    \"userId\": \"88ce4ca1-70ac-44ed-a48b-d254039bbab9\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v1/join",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"join"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "send message",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"roomId\":\"c1f8702e-b417-4c6d-84be-1fa89b5fa852\",\r\n    \"userId\": \"88ce4ca1-70ac-44ed-a48b-d254039bbab9\",\r\n    \"message\": \"Testing\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v1/message",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"message"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
