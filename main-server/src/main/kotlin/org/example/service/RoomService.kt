@@ -20,7 +20,7 @@ class RoomService(
 @Repository
 class RoomRepo {
 
-    var rooms: MutableList<Room> = mutableListOf()
+    var rooms: MutableList<Room> = ArrayList(1000)
 
 
     fun findAll(): List<Room> {

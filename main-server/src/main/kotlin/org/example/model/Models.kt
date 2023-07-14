@@ -2,38 +2,43 @@ package org.example.model
 
 import java.time.OffsetDateTime
 
-data class User(var id: String? = null, var name: String)
+data class User(var id: String? = null, var name: String = "")
 
 
 data class Room(
     var id: String? = null,
-    var name: String,
-    var owner: User,
+    var name: String = "",
+    var owner: User = User(),
     var users: MutableList<User> = mutableListOf(),
     var messages: MutableList<Message> = mutableListOf()
 )
 
 data class JoinRoomRequest(
-    val userId: String,
-    val roomId: String,
+    val userId: String = "",
+    val roomId: String = "",
 )
 
 
 data class MessageRequest(
-    val userId: String,
-    val roomId: String,
-    val message: String
+    val userId: String = "",
+    val roomId: String = "",
+    val message: String = ""
 )
 
 
 data class CreateRoomRequest(
-    val userId: String,
-    val roomName: String
+    val userId: String = "",
+    val roomName: String = "",
+)
+
+data class DeleteRoomRequest(
+    val userId: String = "",
+    val roomId: String = "",
 )
 
 data class Message(
-    val user: User,
-    val message: String,
+    val user: User = User(),
+    val message: String = "",
     val dateTime: OffsetDateTime = OffsetDateTime.now()
 )
 

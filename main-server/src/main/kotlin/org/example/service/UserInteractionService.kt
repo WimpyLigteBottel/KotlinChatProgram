@@ -21,8 +21,10 @@ class UserInteractionService(
 
         if (userDoesNotExist) {
             room.users.add(user)
-            room.messages.add(Message(user, "Has joined the room ${user.name}"))
+            room.messages.add(Message(user, "${user.name}: has joined the room!"))
         }
+
+        roomRepo.save(room)
 
     }
 
@@ -33,6 +35,8 @@ class UserInteractionService(
 
 
         room.messages.add(Message(user, messageRequest.message))
+
+        roomRepo.save(room)
     }
 
     fun createRoom(createRoomRequest: CreateRoomRequest): String? {
@@ -41,13 +45,24 @@ class UserInteractionService(
 
 
         val room = Room(
-            id = UUID.randomUUID().toString(),
             name = createRoomRequest.roomName,
-            owner = user
+            owner = user,
+            users = mutableListOf(user)
         )
-        roomRepo.rooms.add(room)
+        roomRepo.save(room)
 
         return room.id
+    }
+
+    fun deleteRoom(deleteRoomRequest: DeleteRoomRequest) {
+        val room = roomRepo.find(deleteRoomRequest.roomId) ?: throw RuntimeException("room not found")
+        val user = userRepo.find(deleteRoomRequest.userId) ?: throw RuntimeException("user not found")
+
+        if(room.owner.id != user.id){
+            throw RuntimeException("Cant delete this room because user is not the owner")
+        }
+
+        roomRepo.remove(room)
     }
 
 }

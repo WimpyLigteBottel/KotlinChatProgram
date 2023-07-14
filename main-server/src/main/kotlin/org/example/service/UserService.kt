@@ -23,7 +23,7 @@ class UserService(
 @Repository
 class UserRepo {
 
-    var users: MutableList<User> = mutableListOf()
+    var users: MutableList<User> = ArrayList(1000)
 
 
     fun findAll(): List<User> {

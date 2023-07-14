@@ -22,6 +22,7 @@ class RoomController(
         return roomService.getRoom(id)
     }
 
+
 }
 
 @RequestMapping("/v1")
@@ -30,8 +31,8 @@ class UserController(
     private val userService: UserService
 ) {
 
-    @PostMapping("/user")
-    fun createUser(user: User): String? {
+    @PostMapping("/users")
+    fun createUser(@RequestBody user: User): String? {
         return userService.createUser(user);
     }
 
@@ -42,7 +43,6 @@ class UserController(
 
     @GetMapping("/users/{id}")
     fun getUser(@PathVariable id: String): User? {
-
         return userService.getUser(id)
     }
 
@@ -72,6 +72,13 @@ class UserInteractionController(
     @PostMapping("/createRoom")
     fun createRoom(@RequestBody createRoomRequest: CreateRoomRequest): String? {
         return userInteractionService.createRoom(createRoomRequest)
+    }
+
+    @DeleteMapping("/deleteRoom")
+    fun deleteRoom(@RequestBody deleteRoomRequest: DeleteRoomRequest): String {
+        userInteractionService.deleteRoom(deleteRoomRequest)
+
+        return "success"
     }
 }
 
