@@ -87,6 +87,26 @@
 				},
 				{
 					"name": "create user",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"latest_user\", pm.response.text());"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -95,7 +115,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\":\"asdasd\"\r\n}",
+							"raw": "{\r\n    \"name\":\"{{$guid}}\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -144,6 +164,17 @@
 			"item": [
 				{
 					"name": "Create room",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"latest_room\", pm.response.text());"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -152,7 +183,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"roomName\":\"The awesome room name!\",\r\n    \"userId\": \"97a923a5-4eee-403c-8e4e-9873f95a0d01\"\r\n}",
+							"raw": "{\r\n    \"roomName\":\"The awesome room name!\",\r\n    \"userId\": \"{{latest_user}}\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -212,7 +243,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"roomId\":\"c1f8702e-b417-4c6d-84be-1fa89b5fa852\",\r\n    \"userId\": \"88ce4ca1-70ac-44ed-a48b-d254039bbab9\"\r\n}",
+							"raw": "{\r\n    \"roomId\":\"{{latest_room}}\",\r\n    \"userId\": \"{{latest_user}}\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -242,7 +273,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"roomId\":\"c1f8702e-b417-4c6d-84be-1fa89b5fa852\",\r\n    \"userId\": \"88ce4ca1-70ac-44ed-a48b-d254039bbab9\",\r\n    \"message\": \"Testing\"\r\n}",
+							"raw": "{\r\n    \"roomId\":\"{{latest_room}}\",\r\n    \"userId\": \"{{latest_user}}\",\r\n    \"message\": \"Testing\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
