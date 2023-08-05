@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*
 
 @RequestMapping("/v1")
 @RestController
+@CrossOrigin
 class RoomController(
     private val roomService: RoomService
 ) {
@@ -27,6 +28,7 @@ class RoomController(
 
 @RequestMapping("/v1")
 @RestController
+@CrossOrigin
 class UserController(
     private val userService: UserService
 ) {
@@ -50,6 +52,7 @@ class UserController(
 
 @RestController
 @RequestMapping("/v1")
+@CrossOrigin
 class UserInteractionController(
     private val userInteractionService: UserInteractionService
 ) {
