@@ -9,7 +9,8 @@ import { useEffect, useState } from "react";
 
 //Pages
 import LoginPage from "../login/LoginPage";
-import Select from "react-select";
+import JoinRoomPage from "../joinroom/JoinRoomPage";
+import MessagesPage from "../messages/MessagesPage";
 
 //CSS
 import "./Userpage.css";
@@ -20,23 +21,39 @@ function Userpage(data) {
     name: "",
   });
 
+  const [currentRoom, setCurrentRoom] = useState({
+    id: "",
+    name: "",
+    owner: {
+      id: "",
+      name: "",
+    },
+    users: [
+      {
+        id: "",
+        name: "",
+      },
+    ],
+    messages: [],
+  });
+
   const [sendMessage, setSendMessage] = useState("");
-  const [currentRoom, setCurrentRoom] = useState("");
-  const [roomOptions, setRoomOptions] = useState([]);
   const [receivedMessages, setReceivedMessages] = useState([
     { username: "", message: "" },
   ]);
 
   useEffect(() => {
-                console.log(`User has been set`, user);
+    console.log(`User has been set`, user);
+    console.log(`CurrentRoom has been set`, currentRoom);
 
-  }, [user]);
+    if (currentRoom.id != "")
+      setReceivedMessages(currentRoom.messages[0].message);
+  }, [user, currentRoom]);
 
   return (
     <div>
       <LoginPage
-        callbackSetParentUser ={(user) => {
-
+        callbackSetParentUser={(user) => {
           setUser(user);
         }}
       />
@@ -44,31 +61,17 @@ function Userpage(data) {
       <br />
       <br />
 
-      <div>
-        <Select
-          options={roomOptions}
-          isSearchable={false}
-          defaultValue={roomOptions[0]}
-          onChange={(event) => {
-            setCurrentRoom(event.value);
-          }}
-        />
-
-        <button
-          className="coolButton"
-          onClick={async () => {
-            let messages = await getRoomMessages(currentRoom);
-            setReceivedMessages(messages);
-          }}
-        >
-          Join
-        </button>
-      </div>
+      <JoinRoomPage
+        user={user}
+        callbackSetParentRoom={(room) => {
+          setCurrentRoom(room);
+        }}
+      />
 
       <br />
       <br />
 
-      <textarea id="messagebox" defaultValue={receivedMessages} />
+      <MessagesPage currentRoom={currentRoom} />
 
       <br />
       <br />

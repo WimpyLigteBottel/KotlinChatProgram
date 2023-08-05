@@ -24,8 +24,7 @@ function LoginPage(data) {
       <button
         className="coolButton"
         onClick={async () => {
-          let tempUser = await login(username);
-          setUser(tempUser);
+          setUser(await login(username));
         }}
       >
         Login
