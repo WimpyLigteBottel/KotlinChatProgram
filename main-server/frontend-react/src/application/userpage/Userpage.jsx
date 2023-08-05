@@ -1,18 +1,26 @@
-import "./Userpage.css";
-import { useEffect, useState } from "react";
-import Select from "react-select";
-import { getUsers } from "../core/UserService";
-import { getRooms } from "../core/RoomService";
+//functions
 import {
   login,
   getAllJoinedRooms,
   getRoomMessages,
   sendUserMessage,
 } from "./UsepageJs";
+import { useEffect, useState } from "react";
+
+//Pages
+import LoginPage from "../login/LoginPage";
+import Select from "react-select";
+
+//CSS
+import "./Userpage.css";
 
 function Userpage(data) {
+  const [user, setUser] = useState({
+    id: "",
+    name: "",
+  });
+
   const [sendMessage, setSendMessage] = useState("");
-  const [username, setUsername] = useState("");
   const [currentRoom, setCurrentRoom] = useState("");
   const [roomOptions, setRoomOptions] = useState([]);
   const [receivedMessages, setReceivedMessages] = useState([
@@ -20,30 +28,19 @@ function Userpage(data) {
   ]);
 
   useEffect(() => {
-    console.log(receivedMessages);
-  }, [username, sendMessage, receivedMessages, roomOptions]);
+                console.log(`User has been set`, user);
+
+  }, [user]);
 
   return (
     <div>
-      <input
-        id="username"
-        className="css-input-username"
-        defaultValue={username}
-        type="text"
-        onChange={async (event) => {
-          setUsername(event.target.value);
-          let isLoggedIn = await login(event.target.value);
+      <LoginPage
+        callbackSetParentUser ={(user) => {
 
-          if (isLoggedIn) {
-            getAllJoinedRooms(event.target.value).then((roomName) => {
-              setRoomOptions(roomName);
-            });
-          }
+          setUser(user);
         }}
       />
-      <button className="coolButton" onClick={() => {}}>
-        Login
-      </button>
+
       <br />
       <br />
 
@@ -89,7 +86,7 @@ function Userpage(data) {
       <button
         className="coolButton"
         onClick={async () => {
-          await sendUserMessage(username, currentRoom, sendMessage);
+          await sendUserMessage(user.name, currentRoom, sendMessage);
           setReceivedMessages(await getRoomMessages(currentRoom));
         }}
       >
