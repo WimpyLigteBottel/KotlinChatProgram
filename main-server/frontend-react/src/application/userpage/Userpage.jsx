@@ -1,10 +1,4 @@
 //functions
-import {
-  login,
-  getAllJoinedRooms,
-  getRoomMessages,
-  sendUserMessage,
-} from "./UsepageJs";
 import { useEffect, useState } from "react";
 
 //Pages

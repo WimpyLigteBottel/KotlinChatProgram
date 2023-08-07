@@ -4,6 +4,7 @@ import { login } from "./LoginPageJS";
 
 function LoginPage(data) {
   const [username, setUsername] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
     <div>
@@ -14,16 +15,26 @@ function LoginPage(data) {
         type="text"
         onChange={async (event) => {
           setUsername(event.target.value);
+          setIsLoggedIn(false);
         }}
       />
       <button
         className="coolButton"
         onClick={async () => {
-          data.callbackSetParentUser(await login(username));
+          let user = await login(username);
+          if (user.id !== "") {
+            setIsLoggedIn(true);
+          }
+          data.callbackSetParentUser(user);
         }}
       >
         Login
       </button>
+
+      <img
+        src={isLoggedIn ? "checkmark.jpg" : ""}
+        width="22"
+      />
     </div>
   );
 }
