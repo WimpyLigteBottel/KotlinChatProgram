@@ -1,27 +1,8 @@
-import { getRooms, getRoomById } from "../core/RoomService";
-import {} from "../core/UserService";
-
+import { sendMessage } from "../core/UserService";
+import { getRoomById } from "../core/RoomService";
 /*
 This should get all the rooms that the user has joined
-*/
 
-export async function getAllJoinedRooms(userId) {
-  let data = await getRooms();
-
-  let filterData = data.filter((x) =>
-    x.users.map((x) => x.id).includes(userId)
-  );
-
-  return filterData.map((x) => {
-    return {
-      roomId: x.id,
-      value: x.name,
-      label: x.name,
-    };
-  });
-}
-
-/*
 {
     "id": "70980fac-84d0-4fe4-96f5-85be16849642",
     "name": "The awesome room name!",
@@ -37,7 +18,21 @@ export async function getAllJoinedRooms(userId) {
     ],
     "messages": []
 }
+
+
 */
-export async function getRoomDetails(roomId) {
-  return await getRoomById(roomId);
+export async function getRoomMessages(roomId) {
+  let room = await getRoomById(roomId);
+
+  return formatMessages(room.messages);
+}
+
+export function formatMessages(messages) {
+  return messages
+    .map((message) => `${message.user.name}: ${message.message}`)
+    .join("\n");
+}
+
+export async function sendUserMessage(userId, roomId, message) {
+  sendMessage(userId, roomId, message);
 }

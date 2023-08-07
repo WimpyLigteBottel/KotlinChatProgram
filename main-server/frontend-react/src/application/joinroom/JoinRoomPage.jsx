@@ -2,11 +2,7 @@ import "./JoinRoomPage.css";
 import Select from "react-select";
 import { useEffect, useState } from "react";
 
-import {
-  getAllJoinedRooms,
-  getRoomDetails,
-  getRoomMessages,
-} from "./JoinRoomPageJS";
+import { getAllJoinedRooms, getRoomDetails } from "./JoinRoomPageJS";
 
 function JoinRoomPage(data) {
   const [roomOptions, setRoomOptions] = useState([]);
@@ -15,40 +11,30 @@ function JoinRoomPage(data) {
     value: "",
   });
 
-  useEffect(() => {
+  async function updateRoomOptions(data) {
     if (data.user == null || data.user.id === "") {
       return;
     }
+    let rooms = await getAllJoinedRooms(data.user.id);
+    setRoomOptions(rooms);
+  }
 
-    getAllJoinedRooms(data.user.id).then((result) => {
-      if (result != []) {
-        setRoomOptions(result);
-      }
-    });
+  useEffect(() => {
+    updateRoomOptions(data);
   }, [currentRoom, data.user]);
 
   return (
-    <div>
+    <div className="join-room-div">
       <Select
         options={roomOptions}
         isSearchable={false}
         defaultValue={roomOptions[0]}
-        onChange={(event) => {
-          setCurrentRoom({
-            id: event.roomId,
-            name: event.value,
-          });
+        onChange={async (event) => {
+          let details = await getRoomDetails(event.roomId);
+          setCurrentRoom(details);
+          data.callbackSetParentRoom(details);
         }}
       />
-
-      <button
-        className="coolButton"
-        onClick={async () => {
-          data.callbackSetParentRoom(await getRoomDetails(currentRoom.id));
-        }}
-      >
-        Join
-      </button>
     </div>
   );
 }

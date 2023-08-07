@@ -16,39 +16,16 @@ import MessagesPage from "../messages/MessagesPage";
 import "./Userpage.css";
 
 function Userpage(data) {
-  const [user, setUser] = useState({
-    id: "",
-    name: "",
-  });
-
-  const [currentRoom, setCurrentRoom] = useState({
-    id: "",
-    name: "",
-    owner: {
-      id: "",
-      name: "",
-    },
-    users: [
-      {
-        id: "",
-        name: "",
-      },
-    ],
-    messages: [],
-  });
-
-  const [sendMessage, setSendMessage] = useState("");
-  const [receivedMessages, setReceivedMessages] = useState([
-    { username: "", message: "" },
-  ]);
+  const [user, setUser] = useState(null);
+  const [currentRoom, setCurrentRoom] = useState(null);
 
   useEffect(() => {
     console.log(`User has been set`, user);
-    console.log(`CurrentRoom has been set`, currentRoom);
+  }, [user]);
 
-    if (currentRoom.id != "")
-      setReceivedMessages(currentRoom.messages[0].message);
-  }, [user, currentRoom]);
+  useEffect(() => {
+    console.log(`CurrentRoom has been set`, currentRoom);
+  }, [currentRoom]);
 
   return (
     <div>
@@ -71,30 +48,7 @@ function Userpage(data) {
       <br />
       <br />
 
-      <MessagesPage currentRoom={currentRoom} />
-
-      <br />
-      <br />
-
-      <input
-        id="messageSendBox"
-        className="css-input"
-        value={sendMessage}
-        type="text"
-        onChange={(event) => {
-          setSendMessage(event.target.value.replace(",", ""));
-        }}
-      />
-      <br />
-      <button
-        className="coolButton"
-        onClick={async () => {
-          await sendUserMessage(user.name, currentRoom, sendMessage);
-          setReceivedMessages(await getRoomMessages(currentRoom));
-        }}
-      >
-        Send
-      </button>
+      <MessagesPage user={user} currentRoom={currentRoom} />
     </div>
   );
 }
