@@ -1,10 +1,16 @@
 import "./App.css";
-import UserPage from "./userpage/Userpage";
+import UserPage from "./messaging/userpage/Userpage";
+import Actionpage from "./creating/actions/Actionpage";
 
 function App() {
   return (
-    <div>
-      <UserPage />
+    <div className="side-by-side">
+      <div className="side-by-side-child">
+        <UserPage />
+      </div>
+      <div className="side-by-side-child">
+        <Actionpage />
+      </div>
     </div>
   );
 }

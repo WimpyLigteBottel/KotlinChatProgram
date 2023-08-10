@@ -32,3 +32,12 @@ body {
 .button-group > * {
   margin: 0.5rem;
 }
+
+.side-by-side {
+  display: flex;
+  flex-direction: row;
+}
+
+.side-by-side-child {
+  width: 50%;
+}

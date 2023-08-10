@@ -53,3 +53,42 @@ export async function getRoomById(roomId) {
 
   return data;
 }
+
+/*
+{
+    "roomName":"Second room!",
+    "userId": "{{latest_user}}"
+}
+*/
+
+export async function createRoom(name, userId) {
+  let data = axios
+    .post(`${baseUrl}/createRoom`, {
+      roomName: name,
+      userId: userId,
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+
+  return data;
+}
+
+export async function joinRoom(userId, roomId) {
+  let data = axios
+    .post(`${baseUrl}/join`, {
+      roomId: roomId,
+      userId: userId,
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+
+  return data;
+}
