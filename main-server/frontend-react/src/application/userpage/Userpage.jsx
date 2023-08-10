@@ -13,14 +13,6 @@ function Userpage(data) {
   const [user, setUser] = useState(null);
   const [currentRoom, setCurrentRoom] = useState(null);
 
-  useEffect(() => {
-    console.log(`User has been set`, user);
-  }, [user]);
-
-  useEffect(() => {
-    console.log(`CurrentRoom has been set`, currentRoom);
-  }, [currentRoom]);
-
   return (
     <div>
       <LoginPage
@@ -31,7 +23,6 @@ function Userpage(data) {
 
       <br />
       <br />
-
       <JoinRoomPage
         user={user}
         callbackSetParentRoom={(room) => {
