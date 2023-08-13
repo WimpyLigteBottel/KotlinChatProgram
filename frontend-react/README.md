@@ -1,4 +1,16 @@
-# Getting Started with Create React App
+# Why is the goal of this?
+- Create SUPER chat application
+- Able to create an user
+- Able to send messages as an user
+- Able to join rooms
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+# Stack:
+
+- Backend
+  - kotlin
+  - spring
+  - REST
+- Frontend
+  - Making use of tailwind
+  - React
