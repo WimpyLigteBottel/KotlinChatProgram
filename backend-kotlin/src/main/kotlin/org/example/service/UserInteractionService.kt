@@ -1,8 +1,12 @@
 package org.example.service
 
-import org.example.model.*
+import org.example.model.CreateRoomRequest
+import org.example.model.DeleteRoomRequest
+import org.example.model.JoinRoomRequest
+import org.example.model.Message
+import org.example.model.MessageRequest
+import org.example.model.Room
 import org.springframework.stereotype.Service
-import java.util.*
 
 @Service
 class UserInteractionService(
@@ -45,12 +49,14 @@ class UserInteractionService(
 
         val user = userRepo.find(createRoomRequest.userId) ?: throw RuntimeException("user not found")
 
-
         val room = Room(
             name = createRoomRequest.roomName,
             owner = user,
             users = mutableListOf(user)
         )
+
+        room.messages.add(Message(user, "Has created the room"))
+
         roomRepo.save(room)
 
         return room.id
@@ -60,7 +66,7 @@ class UserInteractionService(
         val room = roomRepo.find(deleteRoomRequest.roomId) ?: throw RuntimeException("room not found")
         val user = userRepo.find(deleteRoomRequest.userId) ?: throw RuntimeException("user not found")
 
-        if(room.owner.id != user.id){
+        if (room.owner.id != user.id) {
             throw RuntimeException("Cant delete this room because user is not the owner")
         }
 

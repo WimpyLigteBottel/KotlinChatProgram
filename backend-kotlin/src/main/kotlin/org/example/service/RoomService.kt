@@ -1,7 +1,6 @@
 package org.example.service
 
 import org.example.model.Room
-import org.example.model.User
 import org.springframework.stereotype.Repository
 import org.springframework.stereotype.Service
 import java.util.*
