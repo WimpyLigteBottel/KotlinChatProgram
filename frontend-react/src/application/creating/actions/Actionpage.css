@@ -1,3 +1,14 @@
+.side-by-side-action-page {
+  display: flex;
+  flex-direction: column;
+}
+
+.action-page-input {
+  width:70%;
+  margin-right: 1%;
+  font-size: calc(13px + 0.390625vw);
+}
+
 
 .coolButton {
   appearance: none;

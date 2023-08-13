@@ -1,5 +1,5 @@
-import { createRoom, joinRoom } from "../../core/RoomService";
-import { createUser } from "../../core/UserService";
+import {createRoom, getRooms, joinRoom} from "../../core/RoomService";
+import {createUser, getUsers} from "../../core/UserService";
 
 export async function createSingleUser(name) {
   let userId = await createUser(name);
@@ -20,4 +20,31 @@ export async function joinSpecificRoom(userId, roomId) {
   console.log(`Room has been joined ${roomId} by ${userId}`);
 
   return roomId;
+}
+
+
+
+export async function getRoomSelection() {
+  let data = await getRooms();
+
+  return data.map((x) => {
+    return {
+      id: x.id,
+      value: x.name,
+      label: x.name,
+    };
+  });
+}
+
+
+export async function getUserSelection() {
+  let data = await getUsers();
+
+  return data.map((x) => {
+    return {
+      id: x.id,
+      value: x.name,
+      label: x.name,
+    };
+  });
 }

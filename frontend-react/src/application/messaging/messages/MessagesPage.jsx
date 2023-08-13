@@ -2,18 +2,33 @@ import "./Messages.css";
 import {useEffect, useState} from "react";
 
 import {getRoomMessages, sendUserMessage} from "./MessagesJs";
+import {useInterval} from "../../core/UtilsJs";
+
 
 function MessagesPage({user, currentRoom}) {
     const [receivedMessages, setReceivedMessages] = useState("");
     const [message, setMessage] = useState("");
 
+
+    //2 (techinally on start this goes off)
+    useInterval(async () => {
+        refresh()
+        // put your interval code here.
+    }, 5000);
+
+    // 1
     useEffect(() => {
         refresh();
     }, [currentRoom]);
 
+    // Whenever refresh happens then scroll to the bottom, only works after render update
+    useEffect(() => {
+        scrollToBottomOfTextArea();
+    }, [receivedMessages]);
+
     return (
         <div>
-            <textarea className="css-input-area" defaultValue={receivedMessages}/>
+            <textarea id="textarea-input" className="css-input-area" defaultValue={receivedMessages}/>
             <br/>
 
             <button
@@ -57,6 +72,11 @@ function MessagesPage({user, currentRoom}) {
 
         let messages = await getRoomMessages(currentRoom.id);
         setReceivedMessages(messages);
+    }
+
+    function scrollToBottomOfTextArea() {
+        let textarea = document.getElementById('textarea-input');
+        textarea.scrollTop = textarea.scrollHeight;
     }
 }
 

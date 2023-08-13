@@ -1,119 +1,143 @@
 //functions
 
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import {
-  createSingleUser,
-  createSingleRoom,
-  joinSpecificRoom,
+    createSingleRoom,
+    createSingleUser,
+    getRoomSelection,
+    getUserSelection,
+    joinSpecificRoom,
 } from "./ActionpageJs";
 //Pages
-
+import Select from "react-select";
 //CSS
 import "./Actionpage.css";
+import {getRoomDetails} from "../../messaging/joinroom/JoinRoomPageJS";
+import {getUsers} from "../../core/UserService";
 
 function Actionpage(data) {
-  const [username, setUsername] = useState("");
-  const [userId, setUserId] = useState("");
-  const [roomName, setRoomName] = useState("");
-  const [roomId, setRoomId] = useState("");
+    const [roomName, setRoomName] = useState("");
+    const [roomSelection, setRoomSelection] = useState([]);
+    const [userSelection, setUserSelection] = useState([]);
+    const [roomId, setRoomId] = useState("");
+    const [userId, setUserId] = useState("");
+    const [user, setUser] = useState({id: "", username: ""});
 
-  return (
-    <div>
-      {createUser()}
+    useEffect(() => {
+        getRoomSelection().then(data => {
+            setRoomSelection(data)
+        })
+        getUserSelection().then(data => {
+            setUserSelection(data)
+        })
+    }, [userId,roomId])
 
-      <br />
-      <br />
-      {room()}
-      <br />
-      <br />
-      {joinRoom()}
-    </div>
-  );
+    useEffect(() => {
+        console.log(user)
+    }, [user])
 
-  function createUser() {
+
     return (
-      <div>
-        <input
-          id="username"
-          className="css-input-username"
-          defaultValue={username}
-          placeholder="insert user name"
-          type="text"
-          onChange={async (event) => {
-            setUsername(event.target.value);
-          }}
-        />
-        <button
-          className="coolButton"
-          onClick={async () => {
-            setUserId(await createSingleUser(username));
-          }}
-        >
-          Create
-        </button>
-      </div>
-    );
-  }
+        <div className="side-by-side-action-page">
+            {createUser()}
+            <br/>
+            <br/>
 
-  function room() {
-    return (
-      <div>
-        <input
-          id="username"
-          className="css-input-username"
-          placeholder="insert room name"
-          defaultValue={roomName}
-          type="text"
-          onChange={async (event) => {
-            setRoomName(event.target.value);
-          }}
-        />
-        <button
-          className="coolButton"
-          onClick={async () => {
-            setRoomId(await createSingleRoom(userId, roomName));
-          }}
-        >
-          Create
-        </button>
-      </div>
-    );
-  }
 
-  function joinRoom() {
-    return (
-      <div>
-        <input
-          id="userId"
-          className="css-input-username"
-          placeholder="insert userId"
-          defaultValue={userId}
-          type="text"
-          onChange={async (event) => {
-            setUserId(event.target.value);
-          }}
-        />
-        <input
-          id="roomId"
-          className="css-input-username"
-          placeholder="insert roomId"
-          defaultValue={roomId}
-          type="text"
-          onChange={async (event) => {
-            setRoomId(event.target.value);
-          }}
-        />
-        <button
-          className="coolButton"
-          onClick={async () => {
-            await joinSpecificRoom(userId, roomId);
-          }}
-        >
-          Join!
-        </button>
-      </div>
+            <div>
+                User selected:
+                <Select
+                    options={userSelection}
+                    isSearchable={false}
+                    defaultValue={userSelection[0]}
+                    onChange={async (event) => {
+                        setUserId(event.id)
+                    }}
+                />
+            </div>
+            <br/>
+            <br/>
+            {room()}
+            <br/>
+            <br/>
+            {joinRoom()}
+        </div>
     );
-  }
+
+    function createUser() {
+        return (
+            <div className="side-by-side">
+                <input
+                    id="username"
+                    className="action-page-input"
+                    defaultValue={user.username}
+                    placeholder="insert user name"
+                    type="text"
+                    onChange={async (event) => {
+                        setUser({...user, username: event.target.value})
+                    }}
+                />
+                <button
+                    className="coolButton"
+                    onClick={async () => {
+                        let userId = await createSingleUser(user.username);
+                        setUser({...user, id: userId})
+                    }}
+                >
+                    Create
+                </button>
+            </div>
+        );
+    }
+
+    function room() {
+        return (
+            <div className="side-by-side">
+                <input
+                    id="username"
+                    className="action-page-input"
+                    placeholder="insert room name"
+                    defaultValue={roomName}
+                    type="text"
+                    onChange={async (event) => {
+                        setRoomName(event.target.value);
+                    }}
+                />
+                <button
+                    className="coolButton"
+                    onClick={async () => {
+                        setRoomId(await createSingleRoom(userId, roomName));
+                    }}
+                >
+                    Create
+                </button>
+            </div>
+        );
+    }
+
+    function joinRoom() {
+        return (
+            <div className="side-by-side">
+                Selected join room:
+                <Select
+                    options={roomSelection}
+                    isSearchable={false}
+                    defaultValue={roomSelection[0]}
+                    onChange={async (event) => {
+                        setRoomId(event.id)
+                    }}
+                />
+                <button
+                    className="coolButton"
+                    onClick={async () => {
+                        await joinSpecificRoom(userId, roomId);
+                    }}
+                >
+                    Join!
+                </button>
+            </div>
+        );
+    }
 }
 
 export default Actionpage;
