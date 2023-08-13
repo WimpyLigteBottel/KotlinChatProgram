@@ -8,8 +8,8 @@ function LoginPage(data) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
-    <div>
-      <span>{userId} </span>
+    <div className="login-area">
+      <div className="smaller-text">ID: {userId}</div> <br/><br/>
       <input
         id="username"
         className="css-input-username"
@@ -35,7 +35,7 @@ function LoginPage(data) {
         Login
       </button>
 
-      <img src={isLoggedIn ? "checkmark.jpg" : ""} width="22" />
+      <img src={isLoggedIn ? "checkmark.jpg" : ""} width="22" height="22" />
     </div>
   );
 }
