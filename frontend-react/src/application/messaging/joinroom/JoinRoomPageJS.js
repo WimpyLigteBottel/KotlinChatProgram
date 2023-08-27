@@ -19,24 +19,3 @@ export async function getAllJoinedRooms(userId) {
     };
   });
 }
-
-/*
-{
-    "id": "70980fac-84d0-4fe4-96f5-85be16849642",
-    "name": "The awesome room name!",
-    "owner": {
-        "id": "2fefc072-6be4-4149-91ff-45f1319752b0",
-        "name": "bob"
-    },
-    "users": [
-        {
-            "id": "2fefc072-6be4-4149-91ff-45f1319752b0",
-            "name": "bob"
-        }
-    ],
-    "messages": []
-}
-*/
-export async function getRoomDetails(roomId) {
-  return await getRoomById(roomId);
-}

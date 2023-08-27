@@ -2,7 +2,7 @@ import "./JoinRoomPage.css";
 import Select from "react-select";
 import { useEffect, useState } from "react";
 
-import { getAllJoinedRooms, getRoomDetails } from "./JoinRoomPageJS";
+import { getAllJoinedRooms } from "./JoinRoomPageJS";
 import {getRoomById} from "../../core/RoomService";
 
 function JoinRoomPage(data) {
