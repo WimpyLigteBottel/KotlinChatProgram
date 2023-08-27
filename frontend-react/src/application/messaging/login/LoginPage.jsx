@@ -28,7 +28,6 @@ function LoginPage(data) {
             setIsLoggedIn(true);
             setUserId(user.id);
           }
-
           data.callbackSetParentUser(user);
         }}
       >

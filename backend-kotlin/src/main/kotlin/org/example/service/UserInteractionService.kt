@@ -25,7 +25,7 @@ class UserInteractionService(
 
         if (userDoesNotExist) {
             room.users.add(user)
-            room.messages.add(Message(user, "${user.name}: has joined the room!"))
+            room.messages.add(Message(user, "has joined the room!"))
         }
 
         roomRepo.save(room)

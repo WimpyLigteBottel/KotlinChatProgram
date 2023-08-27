@@ -12,8 +12,6 @@ import {
 import Select from "react-select";
 //CSS
 import "./Actionpage.css";
-import {getRoomDetails} from "../../messaging/joinroom/JoinRoomPageJS";
-import {getUsers} from "../../core/UserService";
 
 function Actionpage(data) {
     const [roomName, setRoomName] = useState("");

@@ -50,19 +50,20 @@ export async function getUserById(userId) {
 }
 
 export function sendMessage(userid, roomid, message) {
+    console.log("Message sent!")
+
   let request = {
     roomId: `${roomid}`,
     userId: `${userid}`,
     message: `${message}`,
   };
 
-  let data = axios
-    .post(`${baseUrl}/message`, request)
-    .then((response) => {
-      return response.data;
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-  return data;
+  return axios
+      .post(`${baseUrl}/message`, request)
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
 }

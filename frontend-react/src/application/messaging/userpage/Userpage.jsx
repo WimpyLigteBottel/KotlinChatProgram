@@ -1,5 +1,5 @@
 //functions
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 
 //Pages
 import LoginPage from "../login/LoginPage";
@@ -8,34 +8,55 @@ import MessagesPage from "../messages/MessagesPage";
 
 //CSS
 import "./Userpage.css";
+import {useInterval} from "../../core/UtilsJs";
+import {getRoomMessages} from "./UserpageJs";
+import {sendMessage} from "../../core/UserService";
 
 function Userpage(data) {
-  const [user, setUser] = useState(null);
-  const [currentRoom, setCurrentRoom] = useState(null);
+    const [user, setUser] = useState(null);
+    const [currentRoom, setCurrentRoom] = useState(null);
+    const [roomMessages, setRoomMessages] = useState("");
 
-  return (
-    <div>
-      <LoginPage
-        callbackSetParentUser={(user) => {
-          setUser(user);
-        }}
-      />
+    async function refreshMessages() {
+        if (currentRoom == null || currentRoom.id === "") {
+            return;
+        }
+        let messages = await getRoomMessages(currentRoom.id);
+        setRoomMessages(messages)
+    }
 
-      <br />
-      <br />
-      <JoinRoomPage
-        user={user}
-        callbackSetParentRoom={(room) => {
-          setCurrentRoom(room);
-        }}
-      />
+    useInterval(async () => {
+        await refreshMessages();
+    }, 5000);
 
-      <br />
-      <br />
+    useEffect(() => {
+        refreshMessages();
+    }, [currentRoom]);
 
-      <MessagesPage user={user} currentRoom={currentRoom} />
-    </div>
-  );
+    return (
+        <div>
+            <LoginPage
+                callbackSetParentUser={setUser}
+            />
+            <br/>
+            <br/>
+            <JoinRoomPage
+                user={user}
+                callbackSetParentRoom={setCurrentRoom}
+            />
+            <br/>
+            <br/>
+            <MessagesPage
+                          roomMessages={roomMessages}
+                          refreshParent={()=>{
+                              refreshMessages();
+                          }}
+                          sendMessage={(message)=>{
+                              sendMessage(user.id, currentRoom.id, message)
+                          }}
+            />
+        </div>
+    );
 }
 
 export default Userpage;
