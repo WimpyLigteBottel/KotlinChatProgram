@@ -1,11 +1,9 @@
 package org.example.service
 
-import org.example.model.CreateRoomRequest
-import org.example.model.DeleteRoomRequest
-import org.example.model.JoinRoomRequest
-import org.example.model.Message
-import org.example.model.MessageRequest
-import org.example.model.Room
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.withContext
+import org.example.model.*
 import org.springframework.stereotype.Service
 
 @Service
@@ -15,7 +13,7 @@ class UserInteractionService(
 ) {
 
 
-    fun joinRoom(joinRoomRequest: JoinRoomRequest) {
+    suspend fun joinRoom(joinRoomRequest: JoinRoomRequest) {
 
         val room = roomRepo.find(joinRoomRequest.roomId) ?: throw RuntimeException("room not found")
         val user = userRepo.find(joinRoomRequest.userId) ?: throw RuntimeException("user not found")
@@ -32,20 +30,29 @@ class UserInteractionService(
 
     }
 
-    fun sendMessage(messageRequest: MessageRequest) {
+    suspend fun sendMessage(messageRequest: MessageRequest) {
+        withContext(Dispatchers.IO) {
 
-        val room = roomRepo.find(messageRequest.roomId) ?: throw RuntimeException("room not found")
-        val user = userRepo.find(messageRequest.userId) ?: throw RuntimeException("user not found")
+            val roomFuture = async {
+                roomRepo.find(messageRequest.roomId) ?: throw RuntimeException("room not found")
+            }
+            val userFuture = async {
+                userRepo.find(messageRequest.userId) ?: throw RuntimeException("user not found")
+            }
 
-        room.users.find { it.id == user.id } ?: throw RuntimeException("User is not in the room!")
+            val room = roomFuture.await()
+            val user = userFuture.await()
+
+            room.users.find { it.id == user.id } ?: throw RuntimeException("User is not in the room!")
 
 
-        room.messages.add(Message(user, messageRequest.message))
+            room.messages.add(Message(user, messageRequest.message))
 
-        roomRepo.save(room)
+            roomRepo.save(room)
+        }
     }
 
-    fun createRoom(createRoomRequest: CreateRoomRequest): String? {
+    suspend fun createRoom(createRoomRequest: CreateRoomRequest): String? {
 
         val user = userRepo.find(createRoomRequest.userId) ?: throw RuntimeException("user not found")
 
@@ -62,15 +69,24 @@ class UserInteractionService(
         return room.id
     }
 
-    fun deleteRoom(deleteRoomRequest: DeleteRoomRequest) {
-        val room = roomRepo.find(deleteRoomRequest.roomId) ?: throw RuntimeException("room not found")
-        val user = userRepo.find(deleteRoomRequest.userId) ?: throw RuntimeException("user not found")
+    suspend fun deleteRoom(deleteRoomRequest: DeleteRoomRequest) {
+        withContext(Dispatchers.IO) {
+            val roomFuture = async {
+                roomRepo.find(deleteRoomRequest.roomId) ?: throw RuntimeException("room not found")
+            }
+            val userFuture = async {
+                userRepo.find(deleteRoomRequest.userId) ?: throw RuntimeException("user not found")
+            }
 
-        if (room.owner.id != user.id) {
-            throw RuntimeException("Cant delete this room because user is not the owner")
+            val room = roomFuture.await()
+            val user = userFuture.await()
+
+            if (room.owner.id != user.id) {
+                throw RuntimeException("Cant delete this room because user is not the owner")
+            }
+
+            roomRepo.remove(room)
         }
-
-        roomRepo.remove(room)
     }
 
 }

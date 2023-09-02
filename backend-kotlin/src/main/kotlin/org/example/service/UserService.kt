@@ -9,13 +9,11 @@ import java.util.*
 class UserService(
     private val userRepo: UserRepo
 ) {
-    fun createUser(user: User): String? {
-        return userRepo.save(user)
-    }
+    suspend fun createUser(user: User) = userRepo.save(user)
 
-    fun getUsers(): List<User> = userRepo.findAll()
+    suspend fun getUsers(): List<User> = userRepo.findAll()
 
-    fun getUser(id: String) = userRepo.find(id)
+    suspend fun getUser(id: String) = userRepo.find(id)
 
 }
 
@@ -26,25 +24,25 @@ class UserRepo {
     var users: MutableList<User> = ArrayList(1000)
 
 
-    fun findAll(): List<User> {
+    suspend fun findAll(): List<User> {
         return users.toList()
     }
 
-    fun find(id: String): User? {
+    suspend fun find(id: String): User? {
         return users.find { it.id == id }
     }
 
-    fun removeAll() {
+    suspend fun removeAll() {
         users = mutableListOf()
     }
 
-    fun remove(user: User) {
+    suspend fun remove(user: User) {
         users = users.filter {
             it.id != user.id
         }.toMutableList()
     }
 
-    fun save(user: User): String? {
+    suspend fun save(user: User): String? {
 
         if (user.id == null) {
             user.id = UUID.randomUUID().toString()

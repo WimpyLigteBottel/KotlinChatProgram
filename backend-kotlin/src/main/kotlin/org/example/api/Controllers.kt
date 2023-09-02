@@ -1,10 +1,12 @@
 package org.example.api
 
+import kotlinx.coroutines.delay
 import org.example.model.*
 import org.example.service.RoomService
 import org.example.service.UserInteractionService
 import org.example.service.UserService
 import org.springframework.web.bind.annotation.*
+
 
 @RequestMapping("/v1")
 @RestController
@@ -34,17 +36,18 @@ class UserController(
 ) {
 
     @PostMapping("/users")
-    fun createUser(@RequestBody user: User): String? {
+    suspend fun createUser(@RequestBody user: User): String? {
         return userService.createUser(user);
     }
 
     @GetMapping("/users")
-    fun getUsers(): List<User> {
-        return userService.getUsers();
+    suspend fun getUsers(): List<User> {
+        delay(10000)
+        return userService.getUsers()
     }
 
     @GetMapping("/users/{id}")
-    fun getUser(@PathVariable id: String): User? {
+    suspend fun getUser(@PathVariable id: String): User? {
         return userService.getUser(id)
     }
 
@@ -59,26 +62,26 @@ class UserInteractionController(
 
 
     @PostMapping("/join")
-    fun clientJoinRoom(@RequestBody joinRoomRequest: JoinRoomRequest): String {
+    suspend fun clientJoinRoom(@RequestBody joinRoomRequest: JoinRoomRequest): String {
         userInteractionService.joinRoom(joinRoomRequest)
 
         return "success"
     }
 
     @PostMapping("/message")
-    fun sendMessage(@RequestBody messageRequest: MessageRequest): String {
+    suspend fun sendMessage(@RequestBody messageRequest: MessageRequest): String {
         userInteractionService.sendMessage(messageRequest)
 
         return "success"
     }
 
     @PostMapping("/createRoom")
-    fun createRoom(@RequestBody createRoomRequest: CreateRoomRequest): String? {
+    suspend fun createRoom(@RequestBody createRoomRequest: CreateRoomRequest): String? {
         return userInteractionService.createRoom(createRoomRequest)
     }
 
     @DeleteMapping("/deleteRoom")
-    fun deleteRoom(@RequestBody deleteRoomRequest: DeleteRoomRequest): String {
+    suspend fun deleteRoom(@RequestBody deleteRoomRequest: DeleteRoomRequest): String {
         userInteractionService.deleteRoom(deleteRoomRequest)
 
         return "success"

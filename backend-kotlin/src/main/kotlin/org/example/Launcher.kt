@@ -1,5 +1,6 @@
 package org.example
 
+import kotlinx.coroutines.runBlocking
 import org.example.api.RoomController
 import org.example.api.UserController
 import org.example.api.UserInteractionController
@@ -25,20 +26,22 @@ open class Launcher : CommandLineRunner {
     lateinit var userInteractionController: UserInteractionController
 
     override fun run(vararg args: String?) {
-        val robId = userController.createUser(User(name = "rob"))
-        val bobId = userController.createUser(User(name = "bob"))
+        runBlocking {
+            val robId = userController.createUser(User(name = "rob"))
+            val bobId = userController.createUser(User(name = "bob"))
 
 
-        val robRoomId = userInteractionController.createRoom(CreateRoomRequest(robId!!, "rob room"))
-        val bobRoomId = userInteractionController.createRoom(CreateRoomRequest(bobId!!, "bob room"))
+            val robRoomId = userInteractionController.createRoom(CreateRoomRequest(robId!!, "rob room"))
+            val bobRoomId = userInteractionController.createRoom(CreateRoomRequest(bobId!!, "bob room"))
 
 
-        userInteractionController.clientJoinRoom(JoinRoomRequest(bobId, robRoomId!!))
-        userInteractionController.clientJoinRoom(JoinRoomRequest(robId, bobRoomId!!))
+            userInteractionController.clientJoinRoom(JoinRoomRequest(bobId, robRoomId!!))
+            userInteractionController.clientJoinRoom(JoinRoomRequest(robId, bobRoomId!!))
 
-        userInteractionController.sendMessage(MessageRequest(robId,robRoomId,"Greetings!"))
-        userInteractionController.sendMessage(MessageRequest(bobId,bobRoomId,"Greetings!"))
+            userInteractionController.sendMessage(MessageRequest(robId, robRoomId, "Greetings!"))
+            userInteractionController.sendMessage(MessageRequest(bobId, bobRoomId, "Greetings!"))
 
+        }
     }
 }
 
