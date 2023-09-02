@@ -1,6 +1,5 @@
 package org.example.api
 
-import kotlinx.coroutines.delay
 import org.example.model.*
 import org.example.service.RoomService
 import org.example.service.UserInteractionService
@@ -42,7 +41,6 @@ class UserController(
 
     @GetMapping("/users")
     suspend fun getUsers(): List<User> {
-        delay(10000)
         return userService.getUsers()
     }
 
