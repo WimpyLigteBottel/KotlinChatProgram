@@ -5,10 +5,13 @@ import Actionpage from "./creating/actions/Actionpage";
 function App() {
   return (
     <div className="side-by-side">
-      <div className="side-by-side-child lightgreen">
+      <div
+        className="side-by-side-child
+       bg-green-500"
+      >
         <UserPage />
       </div>
-      <div className="side-by-side-child lightblue">
+      <div className="side-by-side-child bg-blue-400">
         <Actionpage />
       </div>
     </div>

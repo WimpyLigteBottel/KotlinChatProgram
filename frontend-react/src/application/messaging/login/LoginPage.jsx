@@ -9,10 +9,11 @@ function LoginPage(data) {
 
   return (
     <div className="login-area">
-      <div className="smaller-text">ID: {userId}</div> <br/><br/>
+      <div className="smaller-text">ID: {userId}</div> <br />
+      <br />
       <input
         id="username"
-        className="css-input-username"
+        className="css-input-username rounded font-bold pl-2"
         defaultValue={username}
         type="text"
         onChange={async (event) => {
@@ -20,6 +21,7 @@ function LoginPage(data) {
           setIsLoggedIn(false);
         }}
       />
+      <br />
       <button
         className="coolButton"
         onClick={async () => {
@@ -33,8 +35,12 @@ function LoginPage(data) {
       >
         Login
       </button>
-
-      <img src={isLoggedIn ? "checkmark.jpg" : ""} width="22" height="22" />
+      <img
+        className={isLoggedIn ? "" : "hidden"}
+        src={isLoggedIn ? "checkmark.jpg" : ""}
+        width="22"
+        height="22"
+      />
     </div>
   );
 }
