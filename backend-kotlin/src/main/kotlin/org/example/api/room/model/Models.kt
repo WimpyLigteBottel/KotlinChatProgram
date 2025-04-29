@@ -1,9 +1,7 @@
-package org.example.model
+package org.example.api.room.model
 
-import java.time.OffsetDateTime
-
-data class User(var id: String? = null, var name: String = "")
-
+import org.example.api.message.model.Message
+import org.example.api.user.model.User
 
 data class Room(
     var id: String? = null,
@@ -19,13 +17,6 @@ data class JoinRoomRequest(
 )
 
 
-data class MessageRequest(
-    val userId: String = "",
-    val roomId: String = "",
-    val message: String = ""
-)
-
-
 data class CreateRoomRequest(
     val userId: String = "",
     val roomName: String = "",
@@ -35,10 +26,3 @@ data class DeleteRoomRequest(
     val userId: String = "",
     val roomId: String = "",
 )
-
-data class Message(
-    val user: User = User(),
-    val message: String = "",
-    val dateTime: OffsetDateTime = OffsetDateTime.now()
-)
-

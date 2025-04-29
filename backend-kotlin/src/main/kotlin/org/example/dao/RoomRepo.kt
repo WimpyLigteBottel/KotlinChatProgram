@@ -1,31 +1,17 @@
-package org.example.service
+package org.example.dao
 
-import org.example.model.Room
+import org.example.api.room.model.Room
 import org.springframework.stereotype.Repository
-import org.springframework.stereotype.Service
 import java.util.*
-
-@Service
-class RoomService(
-    private val roomRepo: RoomRepo
-) {
-    fun getRooms(): List<Room> = roomRepo.findAll()
-
-    fun getRoom(id: String): Room? = roomRepo.find(id)
-
-}
-
 
 @Repository
 class RoomRepo {
 
     var rooms: MutableList<Room> = ArrayList(1000)
 
-
     fun findAll(): List<Room> {
         return rooms.toList()
     }
-
 
     fun find(id: String): Room? {
         return rooms.find { it.id == id }

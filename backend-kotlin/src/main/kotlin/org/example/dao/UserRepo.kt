@@ -1,22 +1,8 @@
-package org.example.service
+package org.example.dao
 
-import org.example.model.User
+import org.example.api.user.model.User
 import org.springframework.stereotype.Repository
-import org.springframework.stereotype.Service
 import java.util.*
-
-@Service
-class UserService(
-    private val userRepo: UserRepo
-) {
-    suspend fun createUser(user: User) = userRepo.save(user)
-
-    suspend fun getUsers(): List<User> = userRepo.findAll()
-
-    suspend fun getUser(id: String) = userRepo.find(id)
-
-}
-
 
 @Repository
 class UserRepo {
