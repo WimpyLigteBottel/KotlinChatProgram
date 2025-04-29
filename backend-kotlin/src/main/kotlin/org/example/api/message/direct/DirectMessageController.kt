@@ -1,21 +1,21 @@
-package org.example.api.message
+package org.example.api.message.direct
 
 import org.example.api.message.model.MessageDeleteRequest
-import org.example.api.message.model.MessageRequest
+import org.example.api.message.room.MessageRoomRequest
 import org.example.api.message.model.MessageUpdateRequest
-import org.example.service.message.MessageService
+import org.example.service.message.RoomMessageService
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/v1")
+@RequestMapping("/v1/direct/")
 @CrossOrigin
-class MessageController(
-    private val messageService: MessageService
+class DirectMessageController(
+    private val messageService: RoomMessageService
 ) {
 
     @PostMapping("/message")
-    suspend fun sendMessage(@RequestBody messageRequest: MessageRequest): String {
-        messageService.sendMessage(messageRequest)
+    suspend fun sendMessage(@RequestBody messageRoomRequest: MessageRoomRequest): String {
+        messageService.sendMessage(messageRoomRequest)
 
         return "success"
     }
