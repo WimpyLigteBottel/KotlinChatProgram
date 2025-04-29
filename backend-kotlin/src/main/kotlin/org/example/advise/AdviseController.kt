@@ -10,9 +10,7 @@ import org.springframework.web.reactive.result.method.annotation.ResponseEntityE
 @ControllerAdvice
 class AdviseController: ResponseEntityExceptionHandler() {
 
-
     val logger: Logger =  LoggerFactory.getLogger(this::class.java)
-
 
     @ExceptionHandler(value = [RuntimeException::class])
     fun handleException(e: RuntimeException): ResponseEntity<String?> {

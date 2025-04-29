@@ -2,13 +2,14 @@ package org.example.service.room
 
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import org.example.api.message.model.Message
+import org.example.api.message.room.MessageRoomRequest
 import org.example.api.room.model.CreateRoomRequest
 import org.example.api.room.model.DeleteRoomRequest
 import org.example.api.room.model.JoinRoomRequest
 import org.example.api.room.model.Room
 import org.example.dao.RoomRepo
 import org.example.dao.UserRepo
+import org.example.service.message.RoomMessageService
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -16,6 +17,7 @@ import java.util.*
 class RoomService(
     private val roomRepo: RoomRepo,
     private val userRepo: UserRepo,
+    private val roomMessageService: RoomMessageService
 ) {
 
     suspend fun getRooms(): List<Room> {
@@ -27,18 +29,23 @@ class RoomService(
         return roomRepo.find(id)
     }
 
-
     suspend fun joinRoom(joinRoomRequest: JoinRoomRequest) {
 
         val room = roomRepo.find(joinRoomRequest.roomId) ?: throw RuntimeException("room not found")
         val user = userRepo.find(joinRoomRequest.userId) ?: throw RuntimeException("user not found")
 
-
         val userDoesNotExist = room.users.find { it.id == joinRoomRequest.userId } == null
 
         if (userDoesNotExist) {
             room.users.add(user)
-            room.messages.add(Message(UUID.randomUUID().toString(), user, "has joined the room!"))
+
+            roomMessageService.sendMessage(
+                MessageRoomRequest(
+                    fromId = "TOOD-SERVER-ID",
+                    toId = joinRoomRequest.roomId,
+                    message = "has joined the room!"
+                )
+            )
         }
 
         roomRepo.save(room)
@@ -50,12 +57,19 @@ class RoomService(
         val user = userRepo.find(createRoomRequest.userId) ?: throw RuntimeException("user not found")
 
         val room = Room(
+            id = UUID.randomUUID().toString(),
             name = createRoomRequest.roomName,
             owner = user,
             users = mutableListOf(user)
         )
 
-        room.messages.add(Message(UUID.randomUUID().toString(), user, "Has created the room"))
+        roomMessageService.sendMessage(
+            MessageRoomRequest(
+                fromId = "TOOD-SERVER-ID",
+                toId = room.id!!,
+                message = "has joined the room!"
+            )
+        )
 
         roomRepo.save(room)
 

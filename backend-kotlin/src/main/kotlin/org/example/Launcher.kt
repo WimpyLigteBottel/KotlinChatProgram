@@ -1,8 +1,8 @@
 package org.example
 
 import kotlinx.coroutines.runBlocking
-import org.example.api.message.MessageController
-import org.example.api.message.model.MessageRequest
+import org.example.api.message.room.RoomMessageController
+import org.example.api.message.room.MessageRoomRequest
 import org.example.api.room.RoomController
 import org.example.api.room.model.CreateRoomRequest
 import org.example.api.room.model.JoinRoomRequest
@@ -23,7 +23,7 @@ open class Launcher : CommandLineRunner {
     lateinit var roomController: RoomController
 
     @Autowired
-    lateinit var messageController: MessageController
+    lateinit var messageController: RoomMessageController
 
     override fun run(vararg args: String?) {
         runBlocking {
@@ -39,8 +39,8 @@ open class Launcher : CommandLineRunner {
             roomController.clientJoinRoom(JoinRoomRequest(bobId, robRoomId))
             roomController.clientJoinRoom(JoinRoomRequest(robId, bobRoomId))
 
-            messageController.sendMessage(MessageRequest(robId, robRoomId, "Greetings!"))
-            messageController.sendMessage(MessageRequest(bobId, bobRoomId, "Greetings!"))
+            messageController.sendMessage(MessageRoomRequest(robId, robRoomId, "Greetings!"))
+            messageController.sendMessage(MessageRoomRequest(bobId, bobRoomId, "Greetings!"))
 
         }
     }

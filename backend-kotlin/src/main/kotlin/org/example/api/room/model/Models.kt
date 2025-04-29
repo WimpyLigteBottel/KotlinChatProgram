@@ -1,14 +1,12 @@
 package org.example.api.room.model
 
-import org.example.api.message.model.Message
 import org.example.api.user.model.User
 
 data class Room(
     var id: String? = null,
     var name: String = "",
     var owner: User = User(),
-    var users: MutableList<User> = mutableListOf(),
-    var messages: MutableList<Message> = mutableListOf()
+    var users: MutableList<User> = mutableListOf()
 )
 
 data class JoinRoomRequest(
