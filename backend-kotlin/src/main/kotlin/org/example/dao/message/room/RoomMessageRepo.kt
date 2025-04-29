@@ -1,6 +1,5 @@
-package org.example.dao.message
+package org.example.dao.message.room
 
-import org.example.dao.message.entity.RoomMessageEntity
 import org.springframework.stereotype.Repository
 import java.util.*
 
@@ -32,9 +31,9 @@ class RoomMessageRepo {
             messageEntity.id = UUID.randomUUID().toString()
             roomMessages.add(messageEntity)
 
-            return messageEntity.id
+            return messageEntity.id!!
         }
 
-        return messageEntity.id
+        return messageEntity.id!!
     }
 }

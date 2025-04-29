@@ -1,4 +1,4 @@
-package org.example.dao.user.entity
+package org.example.dao.user
 
 import java.util.UUID
 

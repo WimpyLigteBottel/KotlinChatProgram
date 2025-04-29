@@ -3,12 +3,12 @@ package org.example.service.room
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import org.example.api.message.room.MessageRoomRequest
-import org.example.api.room.model.CreateRoomRequest
-import org.example.api.room.model.DeleteRoomRequest
-import org.example.api.room.model.JoinRoomRequest
-import org.example.api.room.model.Room
-import org.example.dao.RoomRepo
-import org.example.dao.UserRepo
+import org.example.api.room.CreateRoomRequest
+import org.example.api.room.DeleteRoomRequest
+import org.example.api.room.JoinRoomRequest
+import org.example.api.room.Room
+import org.example.dao.room.RoomRepo
+import org.example.dao.user.UserRepo
 import org.example.service.message.RoomMessageService
 import org.springframework.stereotype.Service
 import java.util.*
@@ -41,7 +41,7 @@ class RoomService(
 
             roomMessageService.sendMessage(
                 MessageRoomRequest(
-                    fromId = "TOOD-SERVER-ID",
+                    fromId = "TODO-SERVER-ID",
                     toId = joinRoomRequest.roomId,
                     message = "has joined the room!"
                 )
@@ -57,23 +57,22 @@ class RoomService(
         val user = userRepo.find(createRoomRequest.userId) ?: throw RuntimeException("user not found")
 
         val room = Room(
-            id = UUID.randomUUID().toString(),
             name = createRoomRequest.roomName,
-            owner = user,
+            ownerId = user.id,
             users = mutableListOf(user)
         )
 
+        val roomId = roomRepo.save(room)
+
         roomMessageService.sendMessage(
             MessageRoomRequest(
-                fromId = "TOOD-SERVER-ID",
-                toId = room.id!!,
+                fromId = "TODO-SERVER-ID",
+                toId = roomId,
                 message = "has joined the room!"
             )
         )
 
-        roomRepo.save(room)
-
-        return room.id
+        return roomId
     }
 
     suspend fun deleteRoom(deleteRoomRequest: DeleteRoomRequest) = coroutineScope {
@@ -87,7 +86,7 @@ class RoomService(
         val room = roomFuture.await()
         val user = userFuture.await()
 
-        if (room.owner.id != user.id) {
+        if (room.ownerId != user.id) {
             throw RuntimeException("Cant delete this room because user is not the owner")
         }
 

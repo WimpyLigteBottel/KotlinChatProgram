@@ -1,6 +1,5 @@
-package org.example.dao.message
+package org.example.dao.message.direct
 
-import org.example.dao.message.entity.DirectMessageEntity
 import org.springframework.stereotype.Repository
 import java.util.*
 

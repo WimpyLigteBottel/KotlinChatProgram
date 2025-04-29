@@ -1,12 +1,12 @@
-package org.example.api.room.model
+package org.example.api.room
 
-import org.example.api.user.model.User
+import org.example.dao.user.UserEntity
 
 data class Room(
     var id: String? = null,
     var name: String = "",
-    var owner: User = User(),
-    var users: MutableList<User> = mutableListOf()
+    var ownerId: String,
+    var users: MutableList<UserEntity> = mutableListOf()
 )
 
 data class JoinRoomRequest(

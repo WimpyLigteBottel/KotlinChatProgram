@@ -1,6 +1,5 @@
 package org.example.dao.user
 
-import org.example.dao.user.entity.UserEntity
 import org.springframework.stereotype.Repository
 import java.util.*
 

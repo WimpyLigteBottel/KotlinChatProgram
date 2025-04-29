@@ -1,12 +1,12 @@
-package org.example.dao.message.entity
+package org.example.dao.message.room
 
 import java.time.OffsetDateTime
 import java.util.*
 
-data class DirectMessageEntity(
-    var id: String = UUID.randomUUID().toString(),
+data class RoomMessageEntity(
+    var id: String? = null,
     var created: OffsetDateTime = OffsetDateTime.now(),
     var fromUserId: String,
-    var toUserId: String,
+    var toRoomId: String,
     var message: String,
 )

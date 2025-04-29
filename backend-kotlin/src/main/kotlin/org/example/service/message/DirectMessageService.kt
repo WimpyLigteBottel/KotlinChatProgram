@@ -3,10 +3,12 @@ package org.example.service.message
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import org.example.api.message.direct.DirectMessageRequest
-import org.example.dao.RoomRepo
-import org.example.dao.UserRepo
-import org.example.dao.message.DirectMessageRepo
-import org.example.dao.message.entity.DirectMessageEntity
+import org.example.api.message.model.MessageDeleteRequest
+import org.example.api.message.model.MessageUpdateRequest
+import org.example.dao.message.direct.DirectMessageEntity
+import org.example.dao.message.direct.DirectMessageRepo
+import org.example.dao.room.RoomRepo
+import org.example.dao.user.UserRepo
 import org.springframework.stereotype.Service
 
 @Service
@@ -17,15 +19,11 @@ class DirectMessageService(
 ) {
 
     suspend fun sendMessage(directMessageRequest: DirectMessageRequest) = coroutineScope {
-        val roomFuture = async {
-            roomRepo.find(directMessageRequest.roomIdTo) ?: throw RuntimeException("room not found")
-        }
-        val userFuture = async {
-            userRepo.find(directMessageRequest.userIdFrom) ?: throw RuntimeException("user not found")
-        }
+        val roomFuture = async { roomRepo.find(directMessageRequest.roomIdTo) }
+        val userFuture = async { userRepo.find(directMessageRequest.userIdFrom) }
 
-        val room = roomFuture.await()
-        val user = userFuture.await()
+        val room = roomFuture.await() ?: throw RuntimeException("room not found")
+        val user = userFuture.await() ?: throw RuntimeException("user not found")
 
         messageRepo.save(
             DirectMessageEntity(
@@ -38,5 +36,23 @@ class DirectMessageService(
         room.users.find { it.id == user.id } ?: throw RuntimeException("User is not in the room!")
 
         roomRepo.save(room)
+    }
+
+    suspend fun updateMessage(messageUpdateRequest: MessageUpdateRequest) = coroutineScope {
+        val messageFuture = async { messageRepo.find(messageUpdateRequest.messageId) }
+
+        val message = messageFuture.await() ?: throw RuntimeException("message not found")
+
+        message.message = messageUpdateRequest.message
+
+        messageRepo.save(message)
+    }
+
+    suspend fun deleteMessage(deleteMessageRequest: MessageDeleteRequest) = coroutineScope {
+        val messageFuture = async { messageRepo.find(deleteMessageRequest.messageId) }
+
+        val message = messageFuture.await() ?: throw RuntimeException("message not found")
+
+        messageRepo.remove(message)
     }
 }

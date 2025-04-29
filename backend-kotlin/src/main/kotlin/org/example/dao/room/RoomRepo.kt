@@ -1,6 +1,6 @@
-package org.example.dao
+package org.example.dao.room
 
-import org.example.api.room.model.Room
+import org.example.api.room.Room
 import org.springframework.stereotype.Repository
 import java.util.*
 
@@ -34,12 +34,6 @@ class RoomRepo {
             rooms.add(room)
 
             return room.id!!
-        }
-
-        room.id?.let {
-            var foundRoom = find(it)
-            foundRoom = room
-
         }
 
         return room.id!!

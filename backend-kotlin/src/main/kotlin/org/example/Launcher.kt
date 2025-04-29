@@ -4,8 +4,8 @@ import kotlinx.coroutines.runBlocking
 import org.example.api.message.room.RoomMessageController
 import org.example.api.message.room.MessageRoomRequest
 import org.example.api.room.RoomController
-import org.example.api.room.model.CreateRoomRequest
-import org.example.api.room.model.JoinRoomRequest
+import org.example.api.room.CreateRoomRequest
+import org.example.api.room.JoinRoomRequest
 import org.example.api.user.UserController
 import org.example.api.user.model.User
 import org.springframework.beans.factory.annotation.Autowired
@@ -27,8 +27,8 @@ open class Launcher : CommandLineRunner {
 
     override fun run(vararg args: String?) {
         runBlocking {
-            val robId = userController.createUser(User(name = "rob")) ?: throw RuntimeException("Rob not created")
-            val bobId = userController.createUser(User(name = "bob")) ?: throw RuntimeException("Bob not created")
+            val robId = userController.createUser(User(name = "rob"))
+            val bobId = userController.createUser(User(name = "bob"))
 
             val robRoomId = roomController.createRoom(CreateRoomRequest(robId, "rob room"))
                 ?: throw RuntimeException("Rob room not created")

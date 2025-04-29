@@ -1,9 +1,5 @@
 package org.example.api.room
 
-import org.example.api.room.model.CreateRoomRequest
-import org.example.api.room.model.DeleteRoomRequest
-import org.example.api.room.model.JoinRoomRequest
-import org.example.api.room.model.Room
 import org.example.service.room.RoomService
 import org.springframework.web.bind.annotation.*
 

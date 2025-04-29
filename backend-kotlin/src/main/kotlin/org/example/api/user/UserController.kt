@@ -14,18 +14,17 @@ class UserController(
 
     @GetMapping
     suspend fun getUsers(): List<User> {
-        return userService.getUsers()
+        return userService.getUsers().map { User(it.id, it.name) }
     }
 
     @PostMapping
-    suspend fun createUser(@RequestBody user: User): String? {
+    suspend fun createUser(@RequestBody user: User): String {
         return userService.createUser(user);
     }
 
-
     @GetMapping("/{id}")
     suspend fun getUser(@PathVariable id: String): User? {
-        return userService.getUser(id)
+        return userService.getUser(id)?.let { User(it.id, it.name) }
     }
 
     @DeleteMapping("/{id}")
